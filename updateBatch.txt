@@ -1,0 +1,28 @@
+public void batchUpdateUsingPreparedStatement() throws SQLException {
+ 
+    int[] result = null;
+    String SQL = "update person set firstName=?,lastName=? where id=?"; 
+    // '?' is the placeholder for the parameter
+    try {
+        PreparedStatement stmt = connection.prepareStatement(SQL);
+        connection.setAutoCommit(false);
+        stmt.setString(1, "Abc"); // Value for the first parameter, namely 'firstName'
+        stmt.setString(2, "Def"); // Value for the second parameter, namely 'lastName'
+        stmt.setInt(3, 1); // Value for the third parameter, namely 'id'
+        stmt.addBatch(); // Add to Batch
+ 
+        stmt.setString(1, "Xyz");
+        stmt.setString(2, "Uvw");
+        stmt.setInt(3, 2);
+        stmt.addBatch(); // Add second query to the Batch
+        result = stmt.executeBatch(); // execute the Batch and commit
+        connection.commit();
+    } catch (SQLException e) {
+        connection.rollback();
+        e.printStackTrace();
+    } finally {
+        if (connection != null)
+            connection.close();
+    }
+    System.out.println("Number of rows affected: " + result.length);
+}
