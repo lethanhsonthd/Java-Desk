@@ -24,6 +24,7 @@ public class UsermanagementFrame extends javax.swing.JFrame {
     String language;
     String country;
     ResourceBundle resource;
+
     /**
      * Creates new form UsermanagementFrame
      */
@@ -70,6 +71,7 @@ public class UsermanagementFrame extends javax.swing.JFrame {
         cbxRole = new javax.swing.JComboBox();
         radUS = new javax.swing.JRadioButton();
         radVN = new javax.swing.JRadioButton();
+        btnMoveToBill = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -146,62 +148,70 @@ public class UsermanagementFrame extends javax.swing.JFrame {
             }
         });
 
+        btnMoveToBill.setText("Move to bill");
+        btnMoveToBill.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMoveToBillActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addContainerGap(365, Short.MAX_VALUE)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                    .addComponent(btnNew)
-                                    .addGap(69, 69, 69)
-                                    .addComponent(btnAdd)
-                                    .addGap(64, 64, 64)
-                                    .addComponent(btnRemove))))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(52, 52, 52)
-                            .addComponent(radVN)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(lblUsername)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel7)
-                                    .addGap(140, 140, 140)
-                                    .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addComponent(lblPassword)))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addGap(9, 9, 9)
-                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(jLabel3)
-                                                .addComponent(jLabel6)
-                                                .addComponent(jLabel5)
-                                                .addComponent(jLabel4)))
-                                        .addComponent(jLabel2))
-                                    .addGap(98, 98, 98))
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                    .addGap(125, 125, 125)
-                                    .addComponent(radUS)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(txtPassword, javax.swing.GroupLayout.DEFAULT_SIZE, 217, Short.MAX_VALUE)
-                                .addComponent(txtFirstName)
-                                .addComponent(txtLastName)
-                                .addComponent(txtPhone)
-                                .addComponent(txtEmail)
-                                .addComponent(txtUsername)
-                                .addComponent(cbxRole, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addContainerGap(21, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 652, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(btnNew)
+                                .addGap(69, 69, 69)
+                                .addComponent(btnAdd)
+                                .addGap(64, 64, 64)
+                                .addComponent(btnRemove))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 652, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(52, 52, 52)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(btnMoveToBill)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addGap(9, 9, 9)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(jLabel3)
+                                                    .addComponent(jLabel6)
+                                                    .addComponent(jLabel5)
+                                                    .addComponent(jLabel4)))
+                                            .addComponent(jLabel2))
+                                        .addGap(98, 98, 98))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                        .addGap(73, 73, 73)
+                                        .addComponent(radUS)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txtPassword, javax.swing.GroupLayout.DEFAULT_SIZE, 217, Short.MAX_VALUE)
+                                    .addComponent(txtFirstName)
+                                    .addComponent(txtLastName)
+                                    .addComponent(txtPhone)
+                                    .addComponent(txtEmail)
+                                    .addComponent(txtUsername)
+                                    .addComponent(cbxRole, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(radVN)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblUsername)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel7)
+                                        .addGap(140, 140, 140)
+                                        .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(lblPassword))))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -242,7 +252,8 @@ public class UsermanagementFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtPhone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4))
+                    .addComponent(jLabel4)
+                    .addComponent(btnMoveToBill))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -267,7 +278,7 @@ public class UsermanagementFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         int id = Integer.parseInt(txtID.getText());
         int result = DBCore.deleteUser(id);
-        if (result == 1){
+        if (result == 1) {
             JOptionPane.showMessageDialog(null, "Deleted successfully");
         } else {
             JOptionPane.showConfirmDialog(null, "Something wrong!");
@@ -308,7 +319,9 @@ public class UsermanagementFrame extends javax.swing.JFrame {
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         // TODO add your handling code here:
-        if (checkAll() == false) return;
+        if (checkAll() == false) {
+            return;
+        }
         int id = Integer.parseInt(txtID.getText());
         String username = txtUsername.getText();
         String password = txtPassword.getText();
@@ -363,6 +376,13 @@ public class UsermanagementFrame extends javax.swing.JFrame {
         setUpGUI();
     }//GEN-LAST:event_radUSActionPerformed
 
+    private void btnMoveToBillActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMoveToBillActionPerformed
+        // TODO add your handling code here:
+        CreateBillFrame c = new CreateBillFrame(2);
+        c.setVisible(true);
+        setVisible(false);
+    }//GEN-LAST:event_btnMoveToBillActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -394,6 +414,7 @@ public class UsermanagementFrame extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             final String language = "vn";
             final String country = "VN";
+
             public void run() {
                 new UsermanagementFrame(language, country).setVisible(true);
             }
@@ -402,6 +423,7 @@ public class UsermanagementFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
+    private javax.swing.JButton btnMoveToBill;
     private javax.swing.JButton btnNew;
     private javax.swing.JButton btnRemove;
     private javax.swing.ButtonGroup buttonGroup1;
@@ -461,25 +483,25 @@ public class UsermanagementFrame extends javax.swing.JFrame {
         cbxRole.setSelectedItem("Seller");
         btnAdd.setText("Add");
     }
-    
-    private boolean checkAll(){
+
+    private boolean checkAll() {
         try {
             int ID = Integer.parseInt(txtID.getText());
-        } catch (Exception e){
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "ID is not valid, must be an integer");
             return false;
         }
         String username = txtUsername.getText();
-        if (!username.matches("[a-zA-Z0-9]+")){
+        if (!username.matches("[a-zA-Z0-9]+")) {
             JOptionPane.showMessageDialog(null, "Username is not valid!");
             return false;
         }
         String password = txtPassword.getText();
-        if (!password.matches("[a-zA-Z0-9]+")){
+        if (!password.matches("[a-zA-Z0-9]+")) {
             JOptionPane.showMessageDialog(null, "Password is not valid!");
         }
         String email = txtEmail.getText();
-        if (!email.matches("[a-zA-Z0-9]+@[a-zA-Z0-9]+\\.com")){
+        if (!email.matches("[a-zA-Z0-9]+@[a-zA-Z0-9]+\\.com")) {
             JOptionPane.showMessageDialog(null, "Email is not valid");
             return false;
         }
@@ -493,5 +515,5 @@ public class UsermanagementFrame extends javax.swing.JFrame {
         lblUsername.setText(resource.getString("txtUsername"));
         lblPassword.setText(resource.getString("txtPassword"));
     }
-    
+
 }

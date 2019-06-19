@@ -11,6 +11,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,6 +23,7 @@ import javax.swing.JOptionPane;
  * @author son
  */
 public class DBCore implements Serializable {
+
     public static Connection makeConnection() throws ClassNotFoundException, SQLException {
         Connection cn = null;
         Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
@@ -82,7 +84,7 @@ public class DBCore implements Serializable {
                     String email = resultSet.getString("email");
                     String phone_number = resultSet.getString("phone_number");
                     int role = resultSet.getInt("role");
-                    
+
                     row.add(id);
                     row.add(username);
                     row.add(password);
@@ -91,7 +93,7 @@ public class DBCore implements Serializable {
                     row.add(phone_number);
                     row.add(email);
                     row.add(role);
-                    
+
                     data.add(row);
                 }
             }
@@ -108,8 +110,8 @@ public class DBCore implements Serializable {
 
         return data;
     }
-    
-    public static int updateUser(User user){
+
+    public static int updateUser(User user) {
         Connection connection = null;
         PreparedStatement prepareStatement = null;
         ResultSet resultSet = null;
@@ -122,7 +124,7 @@ public class DBCore implements Serializable {
         String phone = user.phoneNumber;
         String email = user.email;
         int role = user.role;
-        
+
         try {
             connection = makeConnection();
             String sql = "update users set username=?,password=?,firstname=?,lastname=?,phone_number=?,email=?,role=? where id=?";
@@ -136,19 +138,21 @@ public class DBCore implements Serializable {
             prepareStatement.setString(6, email);
             prepareStatement.setInt(7, role);
             prepareStatement.setInt(8, id);
-            
+
             prepareStatement.addBatch();
             result = prepareStatement.executeBatch();
             connection.commit();
-            
-            if (result.length > 0) return result.length;
-        } catch (Exception e){
+
+            if (result.length > 0) {
+                return result.length;
+            }
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return 0;
     }
-    
-    public static int insertUser(User user){
+
+    public static int insertUser(User user) {
         Connection connection = null;
         PreparedStatement prepareStatement = null;
         int result;
@@ -156,7 +160,7 @@ public class DBCore implements Serializable {
             connection = makeConnection();
             String sql = "insert into users(id,username,password,firstname,lastname,phone_number,email,role) values(?,?,?,?,?,?,?,?)";
             prepareStatement = connection.prepareStatement(sql);
-            
+
             prepareStatement.setInt(1, user.id);
             prepareStatement.setString(2, user.username);
             prepareStatement.setString(3, user.password);
@@ -165,17 +169,17 @@ public class DBCore implements Serializable {
             prepareStatement.setString(6, user.phoneNumber);
             prepareStatement.setString(7, user.email);
             prepareStatement.setInt(8, user.role);
-            
+
             result = prepareStatement.executeUpdate();
-            if (result == 1){
+            if (result == 1) {
                 JOptionPane.showMessageDialog(null, "Inserted Successfully");
             } else {
                 JOptionPane.showMessageDialog(null, "Something wrong!");
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (connection != null){
+            if (connection != null) {
                 try {
                     connection.close();
                 } catch (SQLException ex) {
@@ -185,8 +189,8 @@ public class DBCore implements Serializable {
         }
         return 0;
     }
-    
-    public static int deleteUser(int id){
+
+    public static int deleteUser(int id) {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         int result;
@@ -195,14 +199,143 @@ public class DBCore implements Serializable {
             String sql = "delete from users where id = ?";
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, id);
-            
+
             result = preparedStatement.executeUpdate();
-            if (result == 1){
+            if (result == 1) {
                 return 1;
             }
         } catch (Exception e) {
-             e.printStackTrace();
+            e.printStackTrace();
         }
         return 0;
+    }
+
+    public static Vector testGetProduct(String name) throws SQLException {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet rs = null;
+        Vector result = null;
+        try {
+            connection = makeConnection();
+            String sql = "select cate.id cate_id, cate.name cate_name, pro.id pro_id from category as cate, product as pro\n"
+                    + "where cate.id = pro.category and pro.name = ?";
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, name);
+            rs = preparedStatement.executeQuery();
+
+            if (rs.next()) {
+                result = new Vector();
+                result.add(rs.getString("cate_id"));
+                result.add(rs.getString("cate_name"));
+                result.add(rs.getString("pro_id"));
+                return result;
+            }
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(DBCore.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(DBCore.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (preparedStatement != null) {
+                preparedStatement.close();
+            }
+            if (connection != null) {
+                connection.close();
+            }
+        }
+        return null;
+    }
+
+    public static Vector loadProducts() throws SQLException, ClassNotFoundException {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        Vector result = null;
+        try {
+            connection = makeConnection();
+            if (connection != null) {
+                result = new Vector();
+                String sql = "select id,name,unitprice from product";
+                preparedStatement = connection.prepareStatement(sql);
+
+                resultSet = preparedStatement.executeQuery();
+                while (resultSet.next()) {
+                    int id = resultSet.getInt("id");
+                    String name = resultSet.getString("name");
+                    int unitprice = resultSet.getInt("unitprice");
+                    String quantity = "0";
+                    Vector row = new Vector();
+                    row.add(id);
+                    row.add(name);
+                    row.add(unitprice);
+                    row.add(quantity);
+                    result.add(row);
+                }
+                return result;
+            }
+        } finally {
+            if (resultSet != null) {
+                resultSet.close();
+            }
+            if (preparedStatement != null) {
+                preparedStatement.close();
+            }
+            if (connection != null) {
+                connection.close();
+            }
+        }
+        return null;
+    }
+
+    public static int addProductToBillDetails(int user_id, Vector<Integer> productIDArray, Vector<Integer> quantityArray) throws SQLException, ClassNotFoundException {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet rs = null;
+        String generatedColumns[] = {"id"};
+        try {
+            connection = makeConnection();
+            if (connection != null) {
+                // Insert into table bill
+
+                String sql = "insert into bill(user_id) values(?)";
+                preparedStatement = connection.prepareStatement(sql, generatedColumns);
+                connection.setAutoCommit(false);
+                preparedStatement.setInt(1, user_id);
+                int bill_id = 0;
+                int result = preparedStatement.executeUpdate();
+                try {
+                    rs = preparedStatement.getGeneratedKeys();
+                    if (rs.next()) {
+                        bill_id = rs.getInt(1);
+                        String secondSql = "insert into bill_details(bill_id,product_id,quantity) values(?,?,?)";
+                        preparedStatement = connection.prepareStatement(secondSql);
+                        try {
+                            for (int i = 0; i < productIDArray.size(); i++) {
+                                int productID = productIDArray.get(i);
+                                int quantity = quantityArray.get(i);
+                                preparedStatement.setInt(1, bill_id);
+                                preparedStatement.setInt(2, productID);
+                                preparedStatement.setInt(3, quantity);
+                                preparedStatement.addBatch();
+                            }
+                            int[] res = preparedStatement.executeBatch();
+                            connection.commit();
+                            return res.length;
+                        } catch (SQLException e) {
+                            connection.rollback();
+                        }
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        } finally {
+            if (preparedStatement != null) {
+                preparedStatement.close();
+            }
+            if (connection != null) {
+                connection.close();
+            }
+        }
+        return -1;
     }
 }
