@@ -338,4 +338,98 @@ public class DBCore implements Serializable {
         }
         return -1;
     }
+
+    public static int test() throws ClassNotFoundException, SQLException {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        try {
+            connection = makeConnection();
+            String sql = "insert into test(id,user_id) values(?,?)";
+            preparedStatement = connection.prepareStatement(sql);
+            connection.setAutoCommit(false);
+            try {
+                preparedStatement.setInt(1, 1);
+                preparedStatement.setInt(2, 1);
+                preparedStatement.addBatch();
+
+                preparedStatement.setInt(1, 1);
+                preparedStatement.setString(2, "wtf");
+                preparedStatement.addBatch();
+
+                preparedStatement.setInt(1, 9);
+                preparedStatement.setInt(2, 9);
+                preparedStatement.addBatch();
+
+                preparedStatement.setInt(1, 10);
+                preparedStatement.setInt(2, 10);
+                preparedStatement.addBatch();
+
+                int[] res = preparedStatement.executeBatch();
+                connection.setAutoCommit(true);
+                return res.length;
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, e);
+                connection.rollback();
+            }
+        } finally {
+            if (preparedStatement != null) {
+                preparedStatement.close();
+            }
+            if (connection != null) {
+                connection.close();
+            }
+        }
+        return -1;
+    }
+
+    public static Vector loadAllBillOfUser(int id) throws SQLException, ClassNotFoundException {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet rs = null;
+        Vector result = null;
+        try {
+            connection = makeConnection();
+            if (connection != null) {
+                result = new Vector();
+                Vector listAllBillID = new Vector();
+                String sql = "select id from bill where user_id = ?";
+                preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setInt(1, id);
+
+                rs = preparedStatement.executeQuery();
+
+                while (rs.next()) {
+                    listAllBillID.add(rs.getInt("id"));
+                }
+                for (int i = 0; i < listAllBillID.size(); i++) {
+                    int bill_idx = (int) listAllBillID.get(i);
+                    Vector temp = new Vector();
+                    sql = "select bdt.id bdt_id, bdt.quantity bdt_quantity, bdt.bill_id bdt_bill_id, pro.name pro_name from dbo.product as pro, dbo.bill_details as bdt\n"
+                            + "where bdt.bill_id = ? and bdt.product_id = pro.id";
+                    preparedStatement = connection.prepareStatement(sql);
+                    preparedStatement.setInt(1, bill_idx);
+
+                    rs = preparedStatement.executeQuery();
+                    while (rs.next()) {
+                        Vector row = new Vector();
+                        row.add(rs.getInt("bdt_id"));
+                        row.add(rs.getInt("bdt_quantity"));
+                        row.add(rs.getInt("bdt_bill_id"));
+                        row.add(rs.getString("pro_name"));
+                        temp.add(row);
+                    }
+                    result.add(temp);
+                }
+                return result;
+            }
+        } finally {
+            if (preparedStatement != null) {
+                preparedStatement.close();
+            }
+            if (connection != null) {
+                connection.close();
+            }
+        }
+        return null;
+    }
 }
